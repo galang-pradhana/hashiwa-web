@@ -161,7 +161,6 @@ export default function About({ currentLang }: AboutProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-24">
           <div className="lg:col-span-7 flex flex-col gap-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-ink text-paper text-xs uppercase tracking-wider rounded-xs w-fit">
-              <Sparkles className="w-3.5 h-3.5 text-gold" />
               {activeDict.storyBadge}
             </div>
             

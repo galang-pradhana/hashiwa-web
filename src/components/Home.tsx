@@ -182,25 +182,27 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
   };
 
   // B1: Per-value JP descriptions for PEACE grid
-  const getPeaceDescJP = (letter: string): string => {
+  const getPeaceDescJP = (word: string): string => {
     const map: Record<string, string> = {
-      "P": "最高水準の正確性とQA検知フローを遵守し、迅速かつ徹底的なクライアント第一主義を貫く。",
-      "E": "情熱と若いエネルギーを原動力とし、大規模案件でもムラのない管理体制を維持する。",
-      "A": "刻々と変わるAI要件や法令変更に即対応し、柔軟かつ速やかにマイルストーンを完了する。",
-      "C": "クラウドワーカーから企業顧客まで、あらゆる要求に耳を傾け相互発展の関係を築く。",
+      "Professional": "最高水準の正確性とQA検知フローを遵守し、迅速かつ徹底的なクライアント第一主義を貫く。",
+      "Energetic": "情熱と若いエネルギーを原動力とし、大規模案件でもムラのない管理体制を維持する。",
+      "Agile": "刻々と変わるAI要件や法令変更に即対応し、柔軟かつ速やかにマイルストーンを完了する。",
+      "Care": "クラウドワーカーから企業顧客まで、あらゆる要求に耳を傾け相互発展の関係を築く。",
+      "Ethic": "データ処理における厳正な倫理規定と公正な取引を徹底しています。"
     };
-    return map[letter] ?? "データ処理における厳正な倫理規定と公正な取引を徹底しています。";
+    return map[word] || "データ処理における厳正な倫理規定と公正な取引を徹底しています。";
   };
 
   // B1: Per-value ID descriptions for PEACE grid
-  const getPeaceDescID = (letter: string): string => {
+  const getPeaceDescID = (word: string): string => {
     const map: Record<string, string> = {
-      "P": "Mengutamakan kualitas pengerjaan tanpa cela dan kedisiplinan kerja di setiap data yang diproses.",
-      "E": "Didorong oleh ambisi berkembang, kami membina instruktur dan tim dengan sinergi aktif.",
-      "A": "Tangkas menyesuaikan diri dengan perubahan regulasi dan timeline ketat tanpa menurunkan kualitas.",
-      "C": "Menghadirkan lingkungan kerja suportif demi menjaga kestabilan loyalitas seluruh tim.",
+      "Professional": "Mengutamakan kualitas pengerjaan tanpa cela dan kedisiplinan kerja di setiap data yang diproses.",
+      "Energetic": "Didorong oleh ambisi berkembang, kami membina instruktur dan tim dengan sinergi aktif.",
+      "Agile": "Tangkas menyesuaikan diri dengan perubahan regulasi dan timeline ketat tanpa menurunkan kualitas.",
+      "Care": "Menghadirkan lingkungan kerja suportif demi menjaga kestabilan loyalitas seluruh tim.",
+      "Ethic": "Menjaga transparansi penuh dan perlindungan data mitra secara bertanggung jawab."
     };
-    return map[letter] ?? "Menjaga transparansi penuh dan perlindungan data mitra secara bertanggung jawab.";
+    return map[word] || "Menjaga transparansi penuh dan perlindungan data mitra secara bertanggung jawab.";
   };
 
   const getLocalServiceTitle = (sId: string, defaultTitle: string, defaultTitleJp: string) => {
@@ -278,7 +280,6 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-paper/5 border border-gold/25 rounded-full text-gold text-[10px] tracking-wider uppercase font-japanese w-fit">
-              <Sparkles className="w-3 h-3 text-vermillion" />
               {activeDict.badge}
             </div>
 
@@ -573,7 +574,7 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
 
             {/* PEACE Grid Visual on standard grid */}
             <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4">
-              {PEACE_VALUES.slice(0, 4).map((val, i) => (
+              {PEACE_VALUES.map((val, i) => (
                 <div 
                   key={i} 
                   className="bg-paper p-6 rounded-xs border border-mist hover:border-gold/30 transition-all duration-300"
@@ -589,9 +590,9 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
                   </div>
                   <p className="text-xs text-slate leading-relaxed">
                     {currentLang === "JP"
-                      ? getPeaceDescJP(val.letter)
+                      ? getPeaceDescJP(val.word)
                       : currentLang === "ID"
-                      ? getPeaceDescID(val.letter)
+                      ? getPeaceDescID(val.word)
                       : val.description}
                   </p>
                 </div>
