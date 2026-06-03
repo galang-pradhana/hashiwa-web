@@ -1,0 +1,6 @@
+{
+  "name": "Hashiwa Global Strategy",
+  "description": "Refined language localization, annotation, and Japanese language center services bridging cultures and business.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

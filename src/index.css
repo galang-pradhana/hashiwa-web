@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif-display: "DM Serif Display", serif;
+  --font-cormorant: "Cormorant Garamond", serif;
+  --font-sans: "DM Sans", "Inter", sans-serif;
+  --font-japanese: "Noto Sans JP", sans-serif;
+
+  --color-ink: #0F172A; /* Slate-900: Solid, crisp foundation */
+  --color-paper: #F8FAFC; /* Slate-50: Cool geometric canvas */
+  --color-vermillion: #14B8A6; /* Signature Teal: Energetic, refined engineering accent matching the brand logo */
+  --color-gold: #0891B2; /* Signature Cyan: Primary balanced supporting tone matching the brand logo */
+  --color-mist: #E2E8F0; /* Slate-200: Lightweight outline dividers */
+  --color-slate: #475569; /* Slate-600: Body legibility default */
+  --color-sage: #10B981; /* Emerald-500: Dynamic system success state */
+  --color-cream: #FFFFFF; /* Crisp white card structure for Geometric Balance */
+}
+
+/* Base resets & styled scrollbar */
+html {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--color-vermillion);
+  color: var(--color-cream);
+}
+
+/* Custom fade scroll effects */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-mist);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
+}
