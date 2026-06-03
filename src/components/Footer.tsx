@@ -56,33 +56,33 @@ export default function Footer({ setCurrentPage }: FooterProps) {
               <li>
                 <button
                   onClick={() => handleLinkClick("home")}
-                  className="text-mist hover:text-vermillion transition-colors focus:outline-none cursor-pointer"
+                  className="text-mist hover:text-vermillion transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-vermillion focus-visible:ring-offset-1 focus-visible:ring-offset-ink cursor-pointer"
                 >
-                  Homepage Gateway
+                  Home
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => handleLinkClick("services")}
-                  className="text-mist hover:text-vermillion transition-colors focus:outline-none cursor-pointer"
+                  className="text-mist hover:text-vermillion transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-vermillion focus-visible:ring-offset-1 focus-visible:ring-offset-ink cursor-pointer"
                 >
-                  Our Core Services
+                  Services
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => handleLinkClick("about")}
-                  className="text-mist hover:text-vermillion transition-colors focus:outline-none cursor-pointer"
+                  className="text-mist hover:text-vermillion transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-vermillion focus-visible:ring-offset-1 focus-visible:ring-offset-ink cursor-pointer"
                 >
-                  Company Dossier & PEACE Values
+                  About Us
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => handleLinkClick("contact")}
-                  className="text-mist hover:text-vermillion transition-colors focus:outline-none cursor-pointer"
+                  className="text-mist hover:text-vermillion transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-vermillion focus-visible:ring-offset-1 focus-visible:ring-offset-ink cursor-pointer"
                 >
-                  Schedule Consultation Desk
+                  Contact
                 </button>
               </li>
             </ul>
@@ -94,10 +94,38 @@ export default function Footer({ setCurrentPage }: FooterProps) {
               事業分野 · Services
             </h4>
             <ul className="flex flex-col gap-2.5 text-sm text-mist/80">
-              <li>Translation & Localization</li>
-              <li>Multilingual Crowd Annotation</li>
-              <li>Japanese Learning Center (Summarecon)</li>
-              <li>Cross-Border Japanese Locale Support</li>
+              <li>
+                <button
+                  onClick={() => handleLinkClick("services")}
+                  className="hover:text-vermillion transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-vermillion focus-visible:ring-offset-1 focus-visible:ring-offset-ink cursor-pointer text-left"
+                >
+                  Translation & Localization
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleLinkClick("services")}
+                  className="hover:text-vermillion transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-vermillion focus-visible:ring-offset-1 focus-visible:ring-offset-ink cursor-pointer text-left"
+                >
+                  Multilingual Crowd Annotation
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleLinkClick("services")}
+                  className="hover:text-vermillion transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-vermillion focus-visible:ring-offset-1 focus-visible:ring-offset-ink cursor-pointer text-left"
+                >
+                  Japanese Learning Center (Summarecon)
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleLinkClick("services")}
+                  className="hover:text-vermillion transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-vermillion focus-visible:ring-offset-1 focus-visible:ring-offset-ink cursor-pointer text-left"
+                >
+                  Cross-Border Japanese Locale Support
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -150,7 +178,8 @@ export default function Footer({ setCurrentPage }: FooterProps) {
           <div className="flex items-center gap-4">
             <button
               onClick={scrollToTop}
-              className="px-4 py-2 bg-paper/5 hover:bg-vermillion border border-gold/15 hover:border-vermillion text-mist hover:text-paper rounded-xs transition-all duration-300 flex items-center gap-2 text-xs uppercase tracking-wider cursor-pointer"
+              aria-label="Scroll back to top"
+              className="px-4 py-2 bg-paper/5 hover:bg-vermillion border border-gold/15 hover:border-vermillion text-mist hover:text-paper rounded-xs transition-all duration-300 flex items-center gap-2 text-xs uppercase tracking-wider cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-vermillion focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
             >
               Back to Top <ChevronUp className="w-3.5 h-3.5" />
             </button>

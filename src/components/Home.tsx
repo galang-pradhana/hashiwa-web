@@ -181,6 +181,28 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
     }
   };
 
+  // B1: Per-value JP descriptions for PEACE grid
+  const getPeaceDescJP = (letter: string): string => {
+    const map: Record<string, string> = {
+      "P": "最高水準の正確性とQA検知フローを遵守し、迅速かつ徹底的なクライアント第一主義を貫く。",
+      "E": "情熱と若いエネルギーを原動力とし、大規模案件でもムラのない管理体制を維持する。",
+      "A": "刻々と変わるAI要件や法令変更に即対応し、柔軟かつ速やかにマイルストーンを完了する。",
+      "C": "クラウドワーカーから企業顧客まで、あらゆる要求に耳を傾け相互発展の関係を築く。",
+    };
+    return map[letter] ?? "データ処理における厳正な倫理規定と公正な取引を徹底しています。";
+  };
+
+  // B1: Per-value ID descriptions for PEACE grid
+  const getPeaceDescID = (letter: string): string => {
+    const map: Record<string, string> = {
+      "P": "Mengutamakan kualitas pengerjaan tanpa cela dan kedisiplinan kerja di setiap data yang diproses.",
+      "E": "Didorong oleh ambisi berkembang, kami membina instruktur dan tim dengan sinergi aktif.",
+      "A": "Tangkas menyesuaikan diri dengan perubahan regulasi dan timeline ketat tanpa menurunkan kualitas.",
+      "C": "Menghadirkan lingkungan kerja suportif demi menjaga kestabilan loyalitas seluruh tim.",
+    };
+    return map[letter] ?? "Menjaga transparansi penuh dan perlindungan data mitra secara bertanggung jawab.";
+  };
+
   const getLocalServiceTitle = (sId: string, defaultTitle: string, defaultTitleJp: string) => {
     if (currentLang === "JP") return defaultTitleJp;
     if (currentLang === "ID") {
@@ -272,8 +294,11 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
             <div className="flex flex-wrap gap-4 pt-2">
               <button
                 id="hero-cta-primary"
-                onClick={() => handleServiceClick("translation-localization")}
-                className="px-6 py-3.5 bg-vermillion hover:bg-vermillion/90 text-paper text-xs font-semibold uppercase tracking-wider rounded-xs border border-vermillion hover:border-gold/35 transition-all duration-300 shadow-xl hover:shadow-vermillion/20 transform hover:-translate-y-0.5 cursor-pointer focus:outline-none"
+                onClick={() => {
+                  setCurrentPage("services");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className="px-6 py-3.5 bg-vermillion hover:bg-vermillion/90 text-paper text-xs font-semibold uppercase tracking-wider rounded-xs border border-vermillion hover:border-gold/35 transition-all duration-300 shadow-xl hover:shadow-vermillion/20 transform hover:-translate-y-0.5 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
               >
                 {activeDict.btn_explore}
               </button>
@@ -283,7 +308,7 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
                   setCurrentPage("contact");
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                className="px-6 py-3.5 bg-transparent hover:bg-paper/5 text-paper hover:text-gold text-xs font-semibold uppercase tracking-wider rounded-xs border-1.5 border-paper hover:border-gold/50 transition-all duration-300 cursor-pointer focus:outline-none"
+                className="px-6 py-3.5 bg-transparent hover:bg-paper/5 text-paper hover:text-gold text-xs font-semibold uppercase tracking-wider rounded-xs border-1.5 border-paper hover:border-gold/50 transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
               >
                 {activeDict.btn_contact}
               </button>
@@ -444,7 +469,7 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
                   setCurrentPage("services");
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                className="group inline-flex items-center gap-2 px-5 py-3 border border-ink text-ink hover:bg-ink hover:text-paper rounded-xs font-semibold text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer focus:outline-none"
+                className="group inline-flex items-center gap-2 px-5 py-3 border border-ink text-ink hover:bg-ink hover:text-paper rounded-xs font-semibold text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2"
               >
                 {activeDict.advisory_btn}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
@@ -563,7 +588,11 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
                     </div>
                   </div>
                   <p className="text-xs text-slate leading-relaxed">
-                    {currentLang === "JP" ? "私たちは企業の品質向上ガイドラインを最優先に厳格に実行します。" : currentLang === "ID" ? "Kami mengutamakan konsistensi serta kepatuhan hukum kerja profesional demi kepuasan klien." : val.description}
+                    {currentLang === "JP"
+                      ? getPeaceDescJP(val.letter)
+                      : currentLang === "ID"
+                      ? getPeaceDescID(val.letter)
+                      : val.description}
                   </p>
                 </div>
               ))}
@@ -603,7 +632,11 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
                 className="bg-paper/5 border border-gold/15 p-6 rounded-xs text-center flex flex-col justify-between items-center hover:border-vermillion hover:bg-paper/10 transition-all duration-300 group"
               >
                 <div>
-                  <span className="text-4xl block mb-3 group-hover:scale-110 transition-transform duration-300">
+                  <span 
+                    className="text-4xl block mb-3 group-hover:scale-110 transition-transform duration-300"
+                    role="img"
+                    aria-label={`${lang.name} flag`}
+                  >
                     {lang.flag}
                   </span>
                   <p className="font-serif-display font-bold text-sm text-paper tracking-wider mb-0.5">
@@ -652,14 +685,14 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
                 setCurrentPage("contact");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="px-6 py-3.5 bg-ink hover:bg-ink/90 text-paper font-semibold uppercase tracking-wider text-xs rounded-xs border border-ink shadow-2xl transition-all hover:-translate-y-0.5 cursor-pointer focus:outline-none"
+              className="px-6 py-3.5 bg-ink hover:bg-ink/90 text-paper font-semibold uppercase tracking-wider text-xs rounded-xs border border-ink shadow-2xl transition-all hover:-translate-y-0.5 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-gold"
             >
               {activeDict.cta_primary}
             </button>
             <button
               id="cta-band-secondary"
               onClick={() => handleServiceClick("japanese-learning-center")}
-              className="px-6 py-3.5 bg-transparent hover:bg-paper/10 text-paper font-semibold uppercase tracking-wider text-xs rounded-xs border border-paper transition-all cursor-pointer focus:outline-none"
+              className="px-6 py-3.5 bg-transparent hover:bg-paper/10 text-paper font-semibold uppercase tracking-wider text-xs rounded-xs border border-paper transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-gold"
             >
               {activeDict.cta_secondary}
             </button>

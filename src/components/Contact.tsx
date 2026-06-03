@@ -64,7 +64,7 @@ export default function Contact({ currentLang }: ContactProps) {
       head: "グローバル戦略の連携を開始する",
       sub: "正確な翻訳見積かりのご相談、JLPT N1/N2研修日程の照会、アノテーションの試験運用要請など。専門コーディネーターが24時間以内に折り返し詳細をご案内いたします。",
       form_badge: "申請フォーム",
-      form_head: "総合受付総合デスク",
+      form_head: "総合お問い合わせデスク",
       lbl_name: "お名前 (漢字/ローマ字)",
       lbl_email: "メールアドレス",
       lbl_company: "貴社名・組織名 (任意)",
@@ -304,7 +304,7 @@ export default function Contact({ currentLang }: ContactProps) {
                       id="form-submit-btn"
                       type="submit"
                       disabled={loading}
-                      className="px-6 py-3.5 bg-vermillion hover:bg-vermillion/90 disabled:bg-slate text-paper font-semibold text-xs tracking-wider uppercase rounded-xs border border-vermillion hover:border-gold/35 transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer focus:outline-none"
+                      className="px-6 py-3.5 bg-vermillion hover:bg-vermillion/90 disabled:bg-slate text-paper font-semibold text-xs tracking-wider uppercase rounded-xs border border-vermillion hover:border-gold/35 transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
                     >
                       {loading ? activeDict.btn_transmitting : activeDict.btn_transmit}
                       <Send className="w-3.5 h-3.5" />
@@ -328,7 +328,7 @@ export default function Contact({ currentLang }: ContactProps) {
                   <button
                     id="form-reset-btn"
                     onClick={() => setSubmitted(false)}
-                    className="px-6 py-2.5 bg-ink text-paper text-xs uppercase tracking-wider font-semibold hover:bg-gold hover:text-ink transition-colors rounded-xs cursor-pointer focus:outline-none"
+                    className="px-6 py-2.5 bg-ink text-paper text-xs uppercase tracking-wider font-semibold hover:bg-gold hover:text-ink transition-colors rounded-xs cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2"
                   >
                     {activeDict.btn_another}
                   </button>

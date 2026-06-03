@@ -28,7 +28,7 @@ export default function About({ currentLang }: AboutProps) {
       case "E": return <Zap className="w-12 h-12 text-vermillion" />;
       case "A": return <Compass className="w-12 h-12 text-vermillion" />;
       case "C": return <Heart className="w-12 h-12 text-vermillion" />;
-      case "E": return <Bookmark className="w-12 h-12 text-vermillion" />;
+      case "Ethic": return <Bookmark className="w-12 h-12 text-vermillion" />;
       default: return <ShieldAlert className="w-12 h-12 text-vermillion" />;
     }
   };
@@ -243,7 +243,7 @@ export default function About({ currentLang }: AboutProps) {
                       setActiveLetter(indicator);
                     }
                   }}
-                  className={`w-12 h-12 md:w-16 md:h-16 rounded-xs font-serif-display text-lg md:text-2xl font-bold flex items-center justify-center border transition-all duration-300 cursor-pointer focus:outline-none ${
+                  className={`w-12 h-12 md:w-16 md:h-16 rounded-xs font-serif-display text-lg md:text-2xl font-bold flex items-center justify-center border transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ink ${
                     isSelected 
                       ? "bg-vermillion text-paper border-vermillion shadow-xl scale-110" 
                       : "bg-paper/5 text-mist border-paper/10 hover:border-gold hover:text-gold"

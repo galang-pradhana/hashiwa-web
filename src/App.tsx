@@ -61,7 +61,7 @@ export default function App() {
       <main id="main-view-container" className="flex-grow">
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentPage}
+            key={`${currentPage}-${currentLang}`}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
