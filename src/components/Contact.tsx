@@ -174,8 +174,13 @@ export default function Contact({ currentLang }: ContactProps) {
     <div id="contact-view" className="py-24 bg-paper min-h-screen">
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-12">
         
-        {/* Header Block with dynamic localization */}
-        <div className="max-w-3xl mx-auto text-center mb-16">
+        {/* Header Block — animated entrance */}
+        <motion.div 
+          className="max-w-3xl mx-auto text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
           <span className="text-xs text-vermillion font-semibold uppercase tracking-widest font-japanese inline-block mb-3">
             {activeDict.badge}
           </span>
@@ -185,13 +190,18 @@ export default function Contact({ currentLang }: ContactProps) {
           <p className="text-sm md:text-base text-slate font-light leading-relaxed">
             {activeDict.sub}
           </p>
-        </div>
+        </motion.div>
 
         {/* Contact Block split layout */}
         <div id="contact-split-grid" className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-20">
           
-          {/* Left Column: Client Submission Desk */}
-          <div className="lg:col-span-7 bg-cream border border-mist p-8 rounded-xs shadow-sm relative overflow-hidden">
+          {/* Left Column: Client Submission Desk — fade-in from left */}
+          <motion.div 
+            className="lg:col-span-7 bg-cream border border-mist p-8 rounded-xs shadow-sm relative overflow-hidden"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full bg-vermillion/10 flex items-center justify-center text-vermillion">
                 <Send className="w-5 h-5" />
@@ -335,10 +345,15 @@ export default function Contact({ currentLang }: ContactProps) {
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </motion.div>
 
-          {/* Right Column: Contact info & Address Indicators */}
-          <div className="lg:col-span-5 flex flex-col gap-6">
+          {/* Right Column: Contact info & Address Indicators — fade-in from right */}
+          <motion.div 
+            className="lg:col-span-5 flex flex-col gap-6"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          >
             
             {/* Expectation Desk */}
             <div className="bg-ink text-paper p-6 rounded-xs border border-gold/15">
@@ -419,11 +434,18 @@ export default function Contact({ currentLang }: ContactProps) {
                 <ArrowRight className="w-4 h-4" />
               </a>
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Geographic Simulated Viewport */}
-        <div id="office-visual-map" className="bg-cream border border-mist p-6 rounded-xs relative overflow-hidden mb-12">
+        {/* Geographic Simulated Viewport — with animated radar sweep */}
+        <motion.div 
+          id="office-visual-map" 
+          className="bg-cream border border-mist p-6 rounded-xs relative overflow-hidden mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
           <div className="flex justify-between items-center mb-4">
             <div>
               <span className="text-[9px] uppercase tracking-widest text-gold font-japanese block">{activeDict.map_badge}</span>
@@ -432,7 +454,11 @@ export default function Contact({ currentLang }: ContactProps) {
               </h4>
             </div>
             <div className="flex items-center gap-1 text-[11px] text-slate">
-              <span className="w-2 h-2 rounded-full bg-sage animate-ping" />
+              <motion.span 
+                className="w-2 h-2 rounded-full bg-sage"
+                animate={{ scale: [1, 1.8, 1], opacity: [1, 0.3, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              />
               <span>Real-time coordinates active</span>
             </div>
           </div>
@@ -440,11 +466,23 @@ export default function Contact({ currentLang }: ContactProps) {
           <div className="aspect-[21/9] w-full bg-ink rounded-xs border border-gold/15 flex flex-col justify-center items-center p-8 text-center relative overflow-hidden">
             <div className="absolute inset-0 opacity-[0.04] pointer-events-none select-none bg-[radial-gradient(#ffffff_2px,transparent_2px)] [background-size:24px_24px]" />
             <div className="absolute inset-0 bg-gradient-to-tr from-vermillion/10 to-gold/15 pointer-events-none" />
+            
+            {/* Animated radar sweep */}
+            <motion.div
+              className="absolute inset-0 pointer-events-none"
+              style={{ background: "conic-gradient(from 0deg, transparent 0%, rgba(20,184,166,0.08) 30%, transparent 32%)" }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+            />
 
             <div className="relative z-10 flex flex-col items-center gap-4 max-w-md">
-              <div className="w-10 h-10 rounded-full bg-vermillion/20 text-vermillion flex items-center justify-center shrink-0">
-                <MapPin className="w-5 h-5 animate-bounce" />
-              </div>
+              <motion.div 
+                className="w-10 h-10 rounded-full bg-vermillion/20 text-vermillion flex items-center justify-center shrink-0"
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <MapPin className="w-5 h-5" />
+              </motion.div>
 
               {activeLocation === "head" ? (
                 <div>
@@ -479,7 +517,7 @@ export default function Contact({ currentLang }: ContactProps) {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
-import { motion } from "motion/react";
+import { motion, useMotionValue, useTransform, animate } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { 
   Languages, 
   BrainCircuit, 
@@ -11,9 +12,10 @@ import {
   Bookmark, 
   Sparkles,
   ChevronRight,
-  Globe
+  Globe,
+  Quote
 } from "lucide-react";
-import { SERVICES, PEACE_VALUES } from "../data";
+import { SERVICES, PEACE_VALUES, TESTIMONIALS } from "../data";
 
 interface HomeProps {
   setCurrentPage: (page: string) => void;
@@ -241,13 +243,37 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 24 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { type: "spring", stiffness: 120, damping: 20 }
+      transition: { type: "spring", stiffness: 100, damping: 18 }
     }
   };
+
+  // Animated count-up hook
+  function useCountUp(target: number, duration: number = 1.8) {
+    const [count, setCount] = useState(0);
+    const ref = useRef(false);
+    return { count, ref, start: () => {
+      if (ref.current) return;
+      ref.current = true;
+      const start = performance.now();
+      const step = (now: number) => {
+        const progress = Math.min((now - start) / (duration * 1000), 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setCount(Math.round(eased * target));
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }};
+  }
+
+  const stat1 = useCountUp(100);
+  const stat2 = useCountUp(6);
+
+  // Testimonials active state
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   return (
     <div id="home-view" className="relative overflow-hidden">
@@ -255,17 +281,29 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
       {/* 01. HERO SECTION WITH RICH GRAPHICS */}
       <section id="hero-section" className="relative bg-ink text-paper py-24 md:py-32 overflow-hidden">
         
-        {/* Subtle Japanese Background Elements (Authentic Non-Slop Decor) */}
-        <div className="absolute right-[8%] top-[12%] font-japanese text-[140px] md:text-[200px] text-paper/[0.015] font-extrabold select-none pointer-events-none tracking-widest leading-none">
+        {/* Subtle Japanese Background Elements — slow floating animation */}
+        <motion.div 
+          className="absolute right-[8%] top-[12%] font-japanese text-[140px] md:text-[200px] text-paper/[0.018] font-extrabold select-none pointer-events-none tracking-widest leading-none"
+          animate={{ y: [0, -18, 0], x: [0, 6, 0] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        >
           戦略架橋
-        </div>
-        <div className="absolute left-[3%] bottom-[6%] font-japanese text-[90px] text-paper/[0.01] font-extrabold select-none pointer-events-none tracking-widest leading-none">
+        </motion.div>
+        <motion.div 
+          className="absolute left-[3%] bottom-[6%] font-japanese text-[90px] text-paper/[0.012] font-extrabold select-none pointer-events-none tracking-widest leading-none"
+          animate={{ y: [0, 12, 0], x: [0, -5, 0] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        >
           協創理念
-        </div>
+        </motion.div>
 
-        {/* Abstract background subtle glow lights */}
+        {/* Abstract background glow — slow pulse */}
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-paper/5 to-transparent pointer-events-none" />
-        <div className="absolute top-1/2 left-[-10%] w-80 h-80 rounded-full bg-gold/5 blur-3xl pointer-events-none" />
+        <motion.div 
+          className="absolute top-1/2 left-[-10%] w-80 h-80 rounded-full bg-gold/5 blur-3xl pointer-events-none"
+          animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
 
         {/* Classic Grid overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.035] pointer-events-none" />
@@ -386,41 +424,64 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
         </div>
       </section>
 
-      {/* 02. STATS OVERVIEW DECK */}
-      <section id="stats-section" className="bg-ink border-y border-gold/15 py-10">
+      {/* 02. STATS OVERVIEW DECK — animated count-up */}
+      <motion.section 
+        id="stats-section" 
+        className="bg-ink border-y border-gold/15 py-10"
+        onViewportEnter={() => { stat1.start(); stat2.start(); }}
+        viewport={{ once: true, amount: 0.5 }}
+      >
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-gold/15">
+          <motion.div 
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-gold/15"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+          >
             
-            <div className="text-center flex flex-col items-center justify-center px-3">
-              <div className="w-9 h-9 rounded-full bg-paper/5 border border-gold/15 flex items-center justify-center text-gold mb-2.5">
+            <motion.div variants={itemVariants} className="text-center flex flex-col items-center justify-center px-3">
+              <motion.div 
+                className="w-9 h-9 rounded-full bg-paper/5 border border-gold/15 flex items-center justify-center text-gold mb-2.5"
+                whileHover={{ scale: 1.15, borderColor: "rgba(14,116,144,0.5)" }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <Users className="w-4 h-4" />
-              </div>
-              <h3 className="text-2xl md:text-3xl font-serif-display font-medium text-paper">100+</h3>
+              </motion.div>
+              <h3 className="text-2xl md:text-3xl font-serif-display font-medium text-paper">{stat1.count}+</h3>
               <p className="text-[10px] text-gold uppercase tracking-wider font-semibold font-japanese mt-0.5">
                 {activeDict.stats_title_1}
               </p>
               <p className="text-[11px] text-mist/60 font-sans mt-0.5">
                 {activeDict.stats_subtitle_1}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="text-center flex flex-col items-center justify-center px-3 pt-4 md:pt-0">
-              <div className="w-9 h-9 rounded-full bg-paper/5 border border-gold/15 flex items-center justify-center text-gold mb-2.5">
+            <motion.div variants={itemVariants} className="text-center flex flex-col items-center justify-center px-3 pt-4 md:pt-0">
+              <motion.div 
+                className="w-9 h-9 rounded-full bg-paper/5 border border-gold/15 flex items-center justify-center text-gold mb-2.5"
+                whileHover={{ scale: 1.15 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <Globe className="w-4 h-4" />
-              </div>
-              <h3 className="text-2xl md:text-3xl font-serif-display font-medium text-paper">6+</h3>
+              </motion.div>
+              <h3 className="text-2xl md:text-3xl font-serif-display font-medium text-paper">{stat2.count}+</h3>
               <p className="text-[10px] text-gold uppercase tracking-wider font-semibold font-japanese mt-0.5">
                 {activeDict.stats_title_2}
               </p>
               <p className="text-[11px] text-mist/60 font-sans mt-0.5">
                 {activeDict.stats_subtitle_2}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="text-center flex flex-col items-center justify-center px-3 pt-4 md:pt-0">
-              <div className="w-9 h-9 rounded-full bg-paper/5 border border-gold/15 flex items-center justify-center text-gold mb-2.5">
+            <motion.div variants={itemVariants} className="text-center flex flex-col items-center justify-center px-3 pt-4 md:pt-0">
+              <motion.div 
+                className="w-9 h-9 rounded-full bg-paper/5 border border-gold/15 flex items-center justify-center text-gold mb-2.5"
+                whileHover={{ scale: 1.15 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <Bookmark className="w-4 h-4" />
-              </div>
+              </motion.div>
               <h3 className="text-2xl md:text-3xl font-serif-display font-medium text-paper">4 Divisions</h3>
               <p className="text-[10px] text-gold uppercase tracking-wider font-semibold font-japanese mt-0.5">
                 {activeDict.stats_title_3}
@@ -428,12 +489,16 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
               <p className="text-[11px] text-mist/60 font-sans mt-0.5">
                 {activeDict.stats_subtitle_3}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="text-center flex flex-col items-center justify-center px-3 pt-4 md:pt-0">
-              <div className="w-9 h-9 rounded-full bg-paper/5 border border-gold/15 flex items-center justify-center text-gold mb-2.5">
+            <motion.div variants={itemVariants} className="text-center flex flex-col items-center justify-center px-3 pt-4 md:pt-0">
+              <motion.div 
+                className="w-9 h-9 rounded-full bg-paper/5 border border-gold/15 flex items-center justify-center text-gold mb-2.5"
+                whileHover={{ scale: 1.15 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <Clock className="w-4 h-4" />
-              </div>
+              </motion.div>
               <h3 className="text-2xl md:text-3xl font-serif-display font-medium text-paper">Est. 2018</h3>
               <p className="text-[10px] text-gold uppercase tracking-wider font-semibold font-japanese mt-0.5">
                 {activeDict.stats_title_4}
@@ -441,11 +506,11 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
               <p className="text-[11px] text-mist/60 font-sans mt-0.5">
                 {activeDict.stats_subtitle_4}
               </p>
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* 03. SERVICES SECTOR (DYNAMIC TRANSLATIONS) */}
       <section id="services-overview-section" className="py-24 bg-paper relative">
@@ -572,17 +637,29 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
               </button>
             </div>
 
-            {/* PEACE Grid Visual on standard grid */}
-            <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* PEACE Grid Visual — stagger whileInView */}
+            <motion.div 
+              className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+            >
               {PEACE_VALUES.map((val, i) => (
-                <div 
+                <motion.div 
                   key={i} 
-                  className="bg-paper p-6 rounded-xs border border-mist hover:border-gold/30 transition-all duration-300"
+                  variants={itemVariants}
+                  className="bg-paper p-6 rounded-xs border border-mist hover:border-gold/30 hover:shadow-md transition-all duration-300 group"
+                  whileHover={{ y: -3 }}
                 >
                   <div className="flex items-center gap-3 mb-2.5">
-                    <div className="w-8 h-8 rounded-full bg-vermillion/10 flex items-center justify-center text-vermillion font-bold text-sm">
+                    <motion.div 
+                      className="w-8 h-8 rounded-full bg-vermillion/10 flex items-center justify-center text-vermillion font-bold text-sm"
+                      whileHover={{ scale: 1.15, backgroundColor: "rgba(20,184,166,0.2)" }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
                       {val.letter}
-                    </div>
+                    </motion.div>
                     <div>
                       <h4 className="font-serif-display font-medium text-sm text-ink">{val.word}</h4>
                       <p className="text-[9px] text-gold font-japanese">{val.meaning}</p>
@@ -595,9 +672,9 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
                       ? getPeaceDescID(val.word)
                       : val.description}
                   </p>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -658,13 +735,116 @@ export default function Home({ setCurrentPage, setSelectedServiceId, currentLang
         </div>
       </section>
 
+      {/* 05.5. TESTIMONIALS SECTION — New section using existing data */}
+      <section id="testimonials-section" className="py-24 bg-paper border-t border-mist relative overflow-hidden">
+        <div className="absolute right-[3%] top-[20%] font-japanese text-[100px] text-ink/[0.012] font-black pointer-events-none select-none leading-none">
+          信頼
+        </div>
+        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+          <motion.div 
+            className="text-center max-w-2xl mx-auto mb-14"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span className="text-xs uppercase tracking-widest text-vermillion font-japanese font-semibold block mb-2">
+              {currentLang === "JP" ? "お客様の声" : currentLang === "ID" ? "TESTIMONI KLIEN" : "CLIENT TESTIMONIALS"}
+            </span>
+            <h2 className="text-2xl md:text-4xl font-serif-display text-ink font-medium tracking-tight">
+              {currentLang === "JP" ? "実際のクライアントの声" : currentLang === "ID" ? "Kepercayaan Klien Kami" : "Trusted by Global Partners"}
+            </h2>
+          </motion.div>
+
+          {/* Testimonial Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {TESTIMONIALS.map((t, i) => (
+              <motion.div
+                key={t.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.5, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.08)" }}
+                className={`bg-cream border rounded-xs p-7 flex flex-col gap-4 relative cursor-default transition-colors duration-300 ${
+                  activeTestimonial === i ? "border-vermillion/40" : "border-mist hover:border-gold/30"
+                }`}
+                onClick={() => setActiveTestimonial(i)}
+              >
+                {/* Quote icon */}
+                <Quote className="w-6 h-6 text-vermillion/30 absolute top-5 right-5" />
+                
+                {/* Stars */}
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, si) => (
+                    <motion.span 
+                      key={si} 
+                      className="text-gold text-xs"
+                      initial={{ opacity: 0, scale: 0 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 + si * 0.05, type: "spring", stiffness: 200 }}
+                    >
+                      ★
+                    </motion.span>
+                  ))}
+                </div>
+
+                <p className="text-xs text-slate leading-relaxed flex-1 italic">
+                  "{t.quote}"
+                </p>
+
+                <div className="flex items-center gap-3 pt-3 border-t border-mist">
+                  {/* Avatar with initials */}
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-vermillion/20 to-gold/30 flex items-center justify-center text-ink font-serif-display font-bold text-sm shrink-0 border border-gold/20">
+                    {t.avatarSeed.slice(0, 2).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-ink font-serif-display">{t.name}</p>
+                    <p className="text-[9px] text-gold uppercase tracking-wider font-mono">{t.role}</p>
+                    <p className="text-[9px] text-slate/70">{t.company}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Dots indicator */}
+          <div className="flex justify-center gap-2 mt-8">
+            {TESTIMONIALS.map((_, i) => (
+              <motion.button
+                key={i}
+                onClick={() => setActiveTestimonial(i)}
+                className={`rounded-full cursor-pointer focus:outline-none ${
+                  activeTestimonial === i ? "bg-vermillion w-6 h-2" : "bg-mist w-2 h-2 hover:bg-gold"
+                }`}
+                animate={{ width: activeTestimonial === i ? 24 : 8 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                aria-label={`Testimonial ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* 06. CONSTRUCTIVE CTA ACCENTS */}
       <section id="banner-cta-section" className="bg-gradient-to-br from-vermillion to-gold py-24 text-paper relative overflow-hidden">
         
+        {/* Animated shimmer overlay */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-paper/5 to-transparent pointer-events-none"
+          animate={{ x: ["-100%", "200%"] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "linear", repeatDelay: 3 }}
+        />
+
         {/* Decorative background characters */}
-        <div className="absolute left-[5%] bottom-[-20px] font-japanese text-[120px] text-paper/[0.04] font-black pointer-events-none select-none">
+        <motion.div 
+          className="absolute left-[5%] bottom-[-20px] font-japanese text-[120px] text-paper/[0.05] font-black pointer-events-none select-none"
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        >
           未来へ
-        </div>
+        </motion.div>
 
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10 flex flex-col gap-5">
           <span className="text-xs uppercase tracking-widest text-paper/85 font-semibold font-japanese block">

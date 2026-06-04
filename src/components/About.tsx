@@ -204,7 +204,14 @@ export default function About({ currentLang }: AboutProps) {
         </div>
 
         {/* Dynamic & High-Class PEACE Values Presenter Suite with real triggers */}
-        <div id="peace-values-suite" className="bg-ink text-paper p-8 md:p-12 rounded-sm border border-gold/15 mb-24 relative overflow-hidden">
+        <motion.div 
+          id="peace-values-suite" 
+          className="bg-ink text-paper p-8 md:p-12 rounded-sm border border-gold/15 mb-24 relative overflow-hidden"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <div className="absolute left-[3%] top-[5%] opacity-[0.03] select-none pointer-events-none font-japanese text-[140px] text-paper font-black uppercase">
             ピース
           </div>
@@ -232,7 +239,7 @@ export default function About({ currentLang }: AboutProps) {
                                  (activeLetter === "C" && indicator === "C");
 
               return (
-                <button
+                <motion.button
                   id={`peace-switch-${indicator}`}
                   key={indicator}
                   onClick={() => {
@@ -242,14 +249,17 @@ export default function About({ currentLang }: AboutProps) {
                       setActiveLetter(indicator);
                     }
                   }}
-                  className={`w-12 h-12 md:w-16 md:h-16 rounded-xs font-serif-display text-lg md:text-2xl font-bold flex items-center justify-center border transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ink ${
+                  whileTap={{ scale: 0.88 }}
+                  whileHover={{ scale: isSelected ? 1.1 : 1.08 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  className={`w-12 h-12 md:w-16 md:h-16 rounded-xs font-serif-display text-lg md:text-2xl font-bold flex items-center justify-center border transition-colors duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ink ${
                     isSelected 
                       ? "bg-vermillion text-paper border-vermillion shadow-xl scale-110" 
                       : "bg-paper/5 text-mist border-paper/10 hover:border-gold hover:text-gold"
                   }`}
                 >
                   {displayLetter}
-                </button>
+                </motion.button>
               );
             })}
           </div>
@@ -271,7 +281,7 @@ export default function About({ currentLang }: AboutProps) {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Representative Leadership Panels */}
         <div id="team-panels-suite" className="max-w-5xl mx-auto pb-4">
@@ -286,14 +296,21 @@ export default function About({ currentLang }: AboutProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {team.map((t, idx) => (
-              <div 
+              <motion.div 
                 key={idx}
-                className="bg-cream border border-mist p-6 rounded-xs text-center flex flex-col items-center hover:border-gold hover:shadow-lg transition-all duration-300"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -4, boxShadow: "0 16px 40px rgba(0,0,0,0.1)" }}
+                className="bg-cream border border-mist p-6 rounded-xs text-center flex flex-col items-center hover:border-gold transition-all duration-300"
               >
-                {/* Visual Avatar Placeholder representing professional advisors */}
-                <div className="w-16 h-16 rounded-full bg-ink/5 border border-gold flex items-center justify-center mb-4 text-ink font-serif-display font-bold text-lg overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gold/10" />
-                  <Users className="w-5 h-5 text-vermillion" />
+                {/* Premium Avatar — initials + gradient */}
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 shrink-0 border border-gold/20 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-vermillion/30 via-gold/20 to-ink/40" />
+                  <span className="relative z-10 font-serif-display font-bold text-xl text-paper">
+                    {t.name.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
+                  </span>
                 </div>
                 <h4 className="font-serif-display text-sm font-bold text-ink">{t.name}</h4>
                 <p className="text-[9px] text-gold uppercase tracking-wider font-semibold font-mono mt-0.5 mb-2">
@@ -302,7 +319,7 @@ export default function About({ currentLang }: AboutProps) {
                 <p className="text-xs text-slate leading-relaxed font-light">
                   {t.bio}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
 

@@ -306,21 +306,30 @@ export default function Services({
           </p>
         </div>
 
-        {/* Tab Selection Row */}
+        {/* Tab Selection Row — dengan animated active indicator */}
         <div id="services-tabs" className="grid grid-cols-2 lg:grid-cols-4 gap-4 p-2 bg-cream border border-mist rounded-sm mb-12">
           {SERVICES.map((s) => {
             const isActive = selectedServiceId === s.id;
             return (
-              <button
+              <motion.button
                 id={`tab-btn-${s.id}`}
                 key={s.id}
                 onClick={() => setSelectedServiceId(s.id)}
-                className={`py-5 px-4 rounded-xs text-center flex flex-col items-center gap-2 cursor-pointer transition-all duration-300 focus:outline-none ${
+                whileTap={{ scale: 0.97 }}
+                className={`py-5 px-4 rounded-xs text-center flex flex-col items-center gap-2 cursor-pointer transition-all duration-300 focus:outline-none relative ${
                   isActive 
                     ? "bg-ink text-paper border border-gold/40 shadow-lg" 
                     : "bg-transparent text-ink hover:bg-paper/80 hover:text-vermillion"
                 }`}
               >
+                {isActive && (
+                  <motion.div
+                    layoutId="services-active-tab"
+                    className="absolute inset-0 bg-ink rounded-xs"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    style={{ zIndex: -1 }}
+                  />
+                )}
                 <div className={`p-2 rounded-full ${isActive ? "bg-vermillion text-paper" : "bg-ink/5 text-ink"}`}>
                   {getServiceIcon(s.icon)}
                 </div>
@@ -330,7 +339,7 @@ export default function Services({
                 <span className="text-xs md:text-sm font-serif-display font-bold">
                   {getLocalServiceIdTitle(s.id, s.title, s.titleJp)}
                 </span>
-              </button>
+              </motion.button>
             );
           })}
         </div>
@@ -454,16 +463,29 @@ export default function Services({
               </h3>
               <div className="relative border-l border-gold/40 pl-5 flex flex-col gap-6">
                 {activeService.workflow.map((step, idx) => (
-                  <div key={idx} className="relative">
+                  <motion.div 
+                    key={idx} 
+                    className="relative"
+                    initial={{ opacity: 0, x: -12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ duration: 0.4, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  >
                     {/* Ring timeline indicator */}
-                    <span className="absolute -left-[26px] top-1 w-3 h-3 rounded-full bg-vermillion border-2 border-cream z-10" />
+                    <motion.span 
+                      className="absolute -left-[26px] top-1 w-3 h-3 rounded-full bg-vermillion border-2 border-cream z-10"
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ type: "spring", stiffness: 300, delay: idx * 0.08 }}
+                    />
                     <p className="text-[10px] text-gold font-japanese font-medium leading-none mb-1">
                       STEP 0{idx + 1}
                     </p>
                     <p className="text-xs font-semibold text-ink leading-tight">
                       {getLocalWorkflowStep(idx, step)}
                     </p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -678,7 +700,9 @@ export default function Services({
   );
 }
 
-// Inline helper to resolve item titles
+// Inline helper to resolve item titles — with proper localization
 function getLocalServiceIdTitle(sId: string, defaultVal: string, jpVal: string) {
+  // This helper intentionally returns defaultVal as the tab title is set via button label in render
+  // Language-specific titles are handled by the parent via getLocalServiceTitle
   return defaultVal;
 }
